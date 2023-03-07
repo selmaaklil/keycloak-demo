@@ -5,7 +5,11 @@ const _kc = new Keycloak(config);
 
 const initKeycloak = (onAuthenticatedCallback: () => void) => {
   _kc
-    .init({ onLoad: "login-required", flow: "implicit", useNonce: true })
+    .init({ 
+      onLoad: "login-required", 
+      flow: "implicit", 
+      useNonce: true,
+    })
     .then((authenticated) => {
       console.log(authenticated);
       if (!authenticated) {
@@ -13,7 +17,7 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
       }
       onAuthenticatedCallback();
     })
-    .catch(console.error);
+    .catch((err) => console.error(err));
 };
 
 const login = _kc.login;
@@ -31,7 +35,7 @@ const getUsername = () => _kc.tokenParsed?.preferred_username;
 
 const hasRole = (roles: string[]) => {
   return roles.some((role: string) => _kc.hasRealmRole(role));
-}
+};
 
 export {
   initKeycloak,
